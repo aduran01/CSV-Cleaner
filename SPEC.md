@@ -50,7 +50,8 @@ All paths are relative to the `CSV Cleaner/` folder.
 
 | File | Purpose |
 |---|---|
-| `main.py` | CLI entry point: argument parsing, wiring the modules together, exit codes |
+| `main.py` | CLI entry point: argument parsing, file reading and writing, exit codes |
+| `pipeline.py` | Runs every stage on the input bytes (no I/O), used by `main.py` and tests |
 | `diagnostics.py` | Warning/error records, the fatal `CleanerError`, and the stderr reporter |
 | `encoding.py` | Byte-level encoding detection, BOM handling, decoding |
 | `sniff.py` | Delimiter detection |
@@ -106,7 +107,8 @@ and the **exact output bytes**. Error tests also check the reported line and col
       appears outside quotes.
 - [ ] If no candidate works because they all hit parse errors, the fatal error lists each
       candidate's error.
-- [ ] `--delimiter` skips detection entirely.
+- [ ] `--delimiter` skips detection entirely. For both `--delimiter` and
+      `--out-delimiter`, a tab can be written as `\t` or `tab`.
 - [ ] Output uses `,` unless `--out-delimiter` is given.
 - [ ] In a semicolon-delimited file, decimal commas such as `3,14` stay as data.
 
