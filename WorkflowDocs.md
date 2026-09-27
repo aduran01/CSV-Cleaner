@@ -1,0 +1,2 @@
+## What we did first
+- we prompted claude to create a repo rules md file that lists our preliminary rules for the CSV implementation. it will be designed to handle the listed base and edge cases within the file, and also has information on general rules, tech stack, usage.
