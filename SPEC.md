@@ -77,7 +77,9 @@ and the **exact output bytes**. Error tests also check the reported line and col
       `--lf`, `--bom`, `--strip`, and `--pad-short`, as described below.
 - [ ] Exit code `0` means success with no warnings, `1` means success with warnings, and
       `2` means a fatal error with nothing written.
-- [ ] Every warning and error names the physical line and column it refers to.
+- [ ] Every warning and error about a specific place in the file names that physical line
+      and column. Problems with the whole file, such as an unknown `--encoding` or a
+      delimiter that can't be detected, have no position.
 
 ### Encoding
 
@@ -95,7 +97,14 @@ and the **exact output bytes**. Error tests also check the reported line and col
 - [ ] Candidates are `,` `;` `\t` `|`. Detection uses the quote-aware parser over the first
       ~50 logical rows, so delimiters inside quoted fields don't count.
 - [ ] The winner is the candidate that gives the same field count, greater than 1, on the
-      most rows. A tie or no clear winner is a fatal error asking for `--delimiter`.
+      most rows. If candidates tie, the one whose sample parse produced fewer warnings wins,
+      because a wrong delimiter leaves quotes in the middle of unquoted fields. A tie that
+      remains after that is a fatal error asking for `--delimiter`.
+- [ ] If no candidate gives more than one field and none hit a parse error, the file is a
+      single column. The delimiter defaults to `,`, which is safe because no candidate
+      appears outside quotes.
+- [ ] If no candidate works because they all hit parse errors, the fatal error lists each
+      candidate's error.
 - [ ] `--delimiter` skips detection entirely.
 - [ ] Output uses `,` unless `--out-delimiter` is given.
 - [ ] In a semicolon-delimited file, decimal commas such as `3,14` stay as data.

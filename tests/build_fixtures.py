@@ -42,6 +42,17 @@ FIXTURES: dict[str, bytes] = {
     # Empty and minimal files
     "headers_only.csv": b"id,name,zip\r\n",
     "blank_lines.csv": b"a,b\r\n\r\n1,2\n\n3,4\r\n",
+    # Delimiter detection
+    "semicolon_decimal_comma.csv": b"item;price;weight\r\napple;3,14;0,5\r\npear;2,50;1,25\r\n",
+    "tab.csv": b"id\tname\tnote\r\n1\tAda\thello, world\r\n2\tBob\tx\r\n",
+    "pipe.csv": b"id|name\r\n1|Ada\r\n2|Bob\r\n",
+    # Counting commas without respecting quotes would pick comma (3 per row).
+    "quoted_delimiters.csv": b'"x,y,z";b\r\n"1,2,3";4\r\n',
+    # With comma, the quotes land mid-field, so comma splits 2 per row too. Only its
+    # quote warnings separate it from semicolon.
+    "quotes_break_tie.csv": b'a;"x,y"\r\n1;"p,q"\r\n',
+    "ambiguous_delimiter.csv": b"a,b|c\r\n1,2|3\r\n",
+    "single_column.csv": b"name\r\nAda\r\nBob\r\n",
     # Values that must never change
     "numeric_looking.csv": b"zip,lat,lon,id,sci,nan,flag,date\r\n"
     b"00501,40.7128,-74.0060,000123456789012345,1e5,NaN,TRUE,03/04/2025\r\n"
