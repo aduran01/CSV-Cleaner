@@ -26,8 +26,9 @@ non-goals.
 - `.gitattributes` must contain `tests/fixtures/** -text`, which turns off git's CRLF
   conversion on Windows.
 - Name each fixture after the case it covers, e.g. `bare_cr.csv` or `utf16_bom.csv`.
-- Run the tests with `py -m pytest` from the `CSV Cleaner` folder. On this machine Python
-  is started with `py`, not `python`.
+- Run the tests with `venv\Scripts\python -m pytest` from the `CSV Cleaner` folder. On this
+  machine the system Python is started with `py`, not `python`. To recreate the venv, run
+  `py -m venv venv`, then `venv\Scripts\python -m pip install -r requirements-dev.txt`.
 
 ## Changing behavior
 

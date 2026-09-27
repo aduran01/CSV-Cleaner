@@ -60,6 +60,8 @@ All paths are relative to the `CSV Cleaner/` folder.
 | `tests/fixtures/` | Raw input files for the test cases |
 | `tests/build_fixtures.py` | The byte literals every fixture is generated from |
 | `pyproject.toml` | pytest configuration (import paths) |
+| `requirements-dev.txt` | Pinned test-only dependencies (pytest) |
+| `.gitignore` | Keeps `venv/` and caches out of git |
 | `.gitattributes` | Marks fixtures as binary so git leaves their bytes alone |
 
 ## Acceptance criteria
