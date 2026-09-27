@@ -53,6 +53,12 @@ FIXTURES: dict[str, bytes] = {
     "quotes_break_tie.csv": b'a;"x,y"\r\n1;"p,q"\r\n',
     "ambiguous_delimiter.csv": b"a,b|c\r\n1,2|3\r\n",
     "single_column.csv": b"name\r\nAda\r\nBob\r\n",
+    # Row shape
+    "trailing_delimiter_all.csv": b"a,b,\r\n1,2,\r\n3,,\r\n",
+    "trailing_delimiter_some.csv": b"a,b\r\n1,2,\r\n3,4\r\n",
+    # A quoted "" is an empty string, not a trailing delimiter.
+    "trailing_quoted_empty.csv": b'a,b,""\r\n1,2,""\r\n',
+    "ragged.csv": b"a,b,c\r\n1,2\r\n1,2,3,4\r\n5,6,7\r\n",
     # Values that must never change
     "numeric_looking.csv": b"zip,lat,lon,id,sci,nan,flag,date\r\n"
     b"00501,40.7128,-74.0060,000123456789012345,1e5,NaN,TRUE,03/04/2025\r\n"

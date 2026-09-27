@@ -55,6 +55,7 @@ All paths are relative to the `CSV Cleaner/` folder.
 | `encoding.py` | Byte-level encoding detection, BOM handling, decoding |
 | `sniff.py` | Delimiter detection |
 | `parser.py` | Quote-aware tokenizer that produces rows of fields |
+| `clean.py` | Rules for the whole file: trailing delimiter, `--strip`, row length, rejects |
 | `writer.py` | Serializes rows back to CSV bytes |
 | `tests/test_*.py` | pytest tests |
 | `tests/fixtures/` | Raw input files for the test cases |
@@ -132,8 +133,11 @@ and the **exact output bytes**. Error tests also check the reported line and col
 ### Whitespace
 
 - [ ] Spaces and tabs next to delimiters are kept as part of the field value.
-- [ ] `--strip` trims leading and trailing whitespace from **unquoted** fields only.
-      Whitespace inside quotes is never changed.
+- [ ] `--strip` trims leading and trailing spaces and tabs from **unquoted** fields only.
+      Other whitespace (a bare `\r`, a non-breaking space) is kept, and whitespace inside
+      quotes is never changed. A field that was only spaces becomes NULL.
+- [ ] The trailing-delimiter check runs **before** `--strip`, so `a,b, ` has a third
+      column holding a space, not a trailing delimiter.
 
 ### Row shape
 
