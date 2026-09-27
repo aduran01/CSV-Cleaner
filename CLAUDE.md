@@ -20,11 +20,14 @@ non-goals.
 ## Testing practice
 
 - Create fixtures as **bytes**, using `Path.write_bytes` or `b"..."` literals, so editors
-  and git can't change line endings or encoding.
+  and git can't change line endings or encoding. Every fixture is defined in
+  `tests/build_fixtures.py`. Add it there and run `py tests/build_fixtures.py`, and never
+  edit a file in `tests/fixtures/` by hand.
 - `.gitattributes` must contain `tests/fixtures/** -text`, which turns off git's CRLF
   conversion on Windows.
 - Name each fixture after the case it covers, e.g. `bare_cr.csv` or `utf16_bom.csv`.
-- Run the tests with `python -m pytest` from the `CSV Cleaner` folder.
+- Run the tests with `py -m pytest` from the `CSV Cleaner` folder. On this machine Python
+  is started with `py`, not `python`.
 
 ## Changing behavior
 

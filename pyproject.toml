@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+# The modules live at the project root and the fixture builder lives in tests/.
+pythonpath = [".", "tests"]
+testpaths = ["tests"]

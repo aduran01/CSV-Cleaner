@@ -51,12 +51,15 @@ All paths are relative to the `CSV Cleaner/` folder.
 | File | Purpose |
 |---|---|
 | `main.py` | CLI entry point: argument parsing, wiring the modules together, exit codes |
+| `diagnostics.py` | Warning/error records, the fatal `CleanerError`, and the stderr reporter |
 | `encoding.py` | Byte-level encoding detection, BOM handling, decoding |
 | `sniff.py` | Delimiter detection |
 | `parser.py` | Quote-aware tokenizer that produces rows of fields |
 | `writer.py` | Serializes rows back to CSV bytes |
 | `tests/test_*.py` | pytest tests |
 | `tests/fixtures/` | Raw input files for the test cases |
+| `tests/build_fixtures.py` | The byte literals every fixture is generated from |
+| `pyproject.toml` | pytest configuration (import paths) |
 | `.gitattributes` | Marks fixtures as binary so git leaves their bytes alone |
 
 ## Acceptance criteria
