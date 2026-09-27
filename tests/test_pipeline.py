@@ -55,8 +55,8 @@ def test_rejects_are_formatted_with_the_output_options():
     assert output.data == b"a;b;c\n5;6;7\n"
     assert output.rejects == (
         b"line;reason;raw_row\n"
-        b"2;expected 3 fields, found 2;1,2\n"
-        b"3;expected 3 fields, found 4;1,2,3,4\n"
+        b'2;"expected 3 fields, found 2";"1,2"\n'
+        b'3;"expected 3 fields, found 4";"1,2,3,4"\n'
     )
 
 

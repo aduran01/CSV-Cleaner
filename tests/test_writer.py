@@ -69,9 +69,14 @@ def test_line_ending_option_does_not_touch_newlines_inside_fields():
 def test_output_delimiter():
     reporter = Reporter()
     rows = list(parse("a;b\r\n3,14;x\r\n", ";", reporter))
-    # With comma as the output delimiter, the decimal comma now needs quotes.
     assert format_rows(rows, reporter) == 'a,b\r\n"3,14",x\r\n'
-    assert format_rows(rows, reporter, delimiter="\t") == "a\tb\r\n3,14\tx\r\n"
+    # A comma is a delimiter candidate, so it's quoted even in tab-delimited output.
+    assert format_rows(rows, reporter, delimiter="\t") == 'a\tb\r\n"3,14"\tx\r\n'
+
+
+@pytest.mark.parametrize("value", ["a,b", "a;b", "a\tb", "a|b"])
+def test_every_delimiter_candidate_is_quoted(value):
+    assert rewrite('x\r\n"' + value + '"\r\n') == 'x\r\n"' + value + '"\r\n'
 
 
 def test_invalid_output_delimiter():

@@ -181,8 +181,11 @@ and the **exact output bytes**. Error tests also check the reported line and col
 
 ### Output format
 
-- [ ] A field is quoted only if it contains the output delimiter, `"`, `\r`, or `\n`, has
-      leading or trailing whitespace, or is an empty string rather than NULL.
+- [ ] A field is quoted only if it contains the output delimiter or **any delimiter
+      candidate** (`,` `;` `\t` `|`), `"`, `\r`, or `\n`, has leading or trailing
+      whitespace, or is an empty string rather than NULL. Quoting every candidate keeps
+      delimiter detection unambiguous when the output is read again. For example,
+      unquoted `a;x,y` would split two ways with comma and with semicolon.
 - [ ] Every `"` inside a quoted field is written as `""`.
 - [ ] **Running the cleaner on its own output gives identical bytes.** This is tested
       against every fixture.

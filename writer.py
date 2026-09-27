@@ -10,6 +10,7 @@ from typing import Sequence
 from clean import Reject
 from diagnostics import Reporter
 from parser import QUOTE, Row, validate_delimiter
+from sniff import CANDIDATES
 
 REJECTS_HEADER = ("line", "reason", "raw_row")
 
@@ -54,9 +55,12 @@ def _format_value(value: str | None, delimiter: str) -> str:
 
 
 def _needs_quotes(value: str, delimiter: str) -> bool:
+    # Every delimiter candidate is quoted, not just the output delimiter. Then only the
+    # real delimiter appears outside quotes, so detection on the output can't be ambiguous.
+    # Unquoted `a;x,y` would split 2 ways with comma and with semicolon.
     return (
         value == ""  # an empty string, as opposed to NULL
         or value[0].isspace()
         or value[-1].isspace()
-        or any(char in value for char in (delimiter, QUOTE, "\r", "\n"))
+        or any(char in value for char in (delimiter, *CANDIDATES, QUOTE, "\r", "\n"))
     )
