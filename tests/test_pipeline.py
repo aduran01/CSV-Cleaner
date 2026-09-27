@@ -25,7 +25,7 @@ def test_cleaning_the_output_again_gives_identical_bytes(name, options):
     # The second run detects everything again (encoding, BOM, delimiter) from the output.
     again = run(once, options, Reporter())
     assert again.data == once
-    assert again.rejects is None
+    assert again.rejected_count == 0
 
 
 def test_semicolon_file_with_decimal_commas():
@@ -46,7 +46,8 @@ def test_bom_is_not_carried_into_the_header():
 def test_empty_input_warns_and_produces_empty_output():
     reporter = Reporter()
     output = run(b"", Options(), reporter)
-    assert (output.data, output.rejects) == (b"", None)
+    assert output.data == b""
+    assert (output.rejects, output.rejected_count) == (b"line,reason,raw_row\r\n", 0)
     assert [d.message for d in reporter.warnings] == ["input is empty"]
 
 

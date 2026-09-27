@@ -69,7 +69,7 @@ def test_rejects_file_is_named_after_output(make_input, tmp_path):
     assert result.returncode == 1
     rejects = tmp_path / "clean.rejects.csv"
     assert rejects.read_bytes().startswith(b"line,reason,raw_row\r\n2,")
-    assert b"rejected rows written to" in result.stderr
+    assert b"2 rejected row(s) written to" in result.stderr
 
 
 def test_rejects_file_is_named_after_input_when_writing_to_stdout(make_input, tmp_path):
@@ -77,9 +77,18 @@ def test_rejects_file_is_named_after_input_when_writing_to_stdout(make_input, tm
     assert (tmp_path / "ragged.rejects.csv").exists()
 
 
-def test_no_rejects_file_when_nothing_is_rejected(make_input, tmp_path):
-    cli(make_input("crlf.csv"), "-o", tmp_path / "out.csv")
-    assert not list(tmp_path.glob("*.rejects.csv"))
+def test_rejects_file_is_header_only_when_nothing_is_rejected(make_input, tmp_path):
+    result = cli(make_input("crlf.csv"), "-o", tmp_path / "out.csv")
+    assert result.returncode == 0
+    assert (tmp_path / "out.rejects.csv").read_bytes() == b"line,reason,raw_row\r\n"
+    assert b"0 rejected row(s) written to" in result.stderr
+
+
+def test_rejects_from_an_earlier_run_are_replaced(make_input, tmp_path):
+    out = tmp_path / "out.csv"
+    cli(make_input("ragged.csv"), "-o", out)
+    cli(make_input("crlf.csv"), "-o", out)
+    assert (tmp_path / "out.rejects.csv").read_bytes() == b"line,reason,raw_row\r\n"
 
 
 def test_no_temp_files_are_left_behind(make_input, tmp_path):

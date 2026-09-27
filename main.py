@@ -23,14 +23,15 @@ def main(argv: list[str] | None = None) -> int:
     reporter = Reporter()
     try:
         output = run(_read(args.input), _options(args), reporter)
-        rejects_path = _rejects_path(args.input, args.output) if output.rejects is not None else None
+        # Always written, even with no rejects, so a file left by an earlier run
+        # can never be mistaken for this run's rejects.
+        rejects_path = _rejects_path(args.input, args.output)
         _write_all(args.output, output.data, rejects_path, output.rejects)
     except CleanerError as exc:
         reporter.flush()
         print(exc.diagnostic.format(), file=sys.stderr)
         return 2
-    if rejects_path is not None:
-        reporter.info(f"rejected rows written to {rejects_path}")
+    reporter.info(f"{output.rejected_count} rejected row(s) written to {rejects_path}")
     exit_code = 1 if reporter.warnings else 0
     reporter.flush()
     return exit_code
@@ -77,7 +78,7 @@ def _rejects_path(input_path: Path, output_path: Path | None) -> Path:
     return base.with_name(f"{base.stem}.rejects.csv")
 
 
-def _write_all(output_path: Path | None, data: bytes, rejects_path: Path | None, rejects: bytes | None) -> None:
+def _write_all(output_path: Path | None, data: bytes, rejects_path: Path, rejects: bytes) -> None:
     """Write every output only after the whole file has been processed.
 
     Each file goes to a temporary name first and is renamed into place, so a

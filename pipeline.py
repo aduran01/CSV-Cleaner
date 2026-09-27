@@ -28,7 +28,8 @@ class Options:
 @dataclass(frozen=True)
 class Output:
     data: bytes
-    rejects: bytes | None  # None when no row was rejected
+    rejects: bytes  # always present: just the header row when nothing was rejected
+    rejected_count: int
 
 
 def run(data: bytes, options: Options, reporter: Reporter) -> Output:
@@ -46,13 +47,8 @@ def run(data: bytes, options: Options, reporter: Reporter) -> Output:
         rows = list(parse(text, delimiter, reporter))
         result = clean(rows, reporter, strip=options.strip, pad_short=options.pad_short)
         cleaned = format_rows(result.rows, reporter, delimiter=options.out_delimiter, line_ending=line_ending)
-        rejects = None
-        if result.rejects:
-            rejects = format_rejects(result.rejects, delimiter=options.out_delimiter, line_ending=line_ending)
+        rejects = format_rejects(result.rejects, delimiter=options.out_delimiter, line_ending=line_ending)
     except ValueError as exc:  # an invalid --delimiter or --out-delimiter
         raise CleanerError(str(exc)) from None
 
-    return Output(
-        encode(cleaned, bom=options.bom),
-        None if rejects is None else encode(rejects, bom=options.bom),
-    )
+    return Output(encode(cleaned, bom=options.bom), encode(rejects, bom=options.bom), len(result.rejects))

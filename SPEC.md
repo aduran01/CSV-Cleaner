@@ -151,7 +151,10 @@ and the **exact output bytes**. Error tests also check the reported line and col
       are written to a rejects file with the columns `line,reason,raw_row`, and each one
       produces a warning.
 - [ ] The rejects file is `<output stem>.rejects.csv`, or `<input stem>.rejects.csv` when
-      writing to stdout. It is only created if at least one row is rejected.
+      writing to stdout. It is **written on every successful run**, holding just the header
+      row when nothing was rejected. That way a rejects file left by an earlier run is
+      always replaced and can't be mistaken for the current run's. The number of rejected
+      rows is reported on stderr as info.
 - [ ] The rejects file follows the same output rules as the main output (quoting,
       delimiter, line endings, encoding), so it is valid CSV. The `raw_row` column holds
       each row's original text exactly.
