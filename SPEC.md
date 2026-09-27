@@ -150,6 +150,9 @@ and the **exact output bytes**. Error tests also check the reported line and col
       produces a warning.
 - [ ] The rejects file is `<output stem>.rejects.csv`, or `<input stem>.rejects.csv` when
       writing to stdout. It is only created if at least one row is rejected.
+- [ ] The rejects file follows the same output rules as the main output (quoting,
+      delimiter, line endings, encoding), so it is valid CSV. The `raw_row` column holds
+      each row's original text exactly.
 - [ ] `--pad-short` fills short rows with NULL fields instead of rejecting them. Rows with
       too many fields are always rejected.
 - [ ] A physical line that is completely empty and not inside quotes is skipped with a
@@ -161,6 +164,8 @@ and the **exact output bytes**. Error tests also check the reported line and col
 - [ ] An empty field with quotes (`a,"",b`) is an **empty string**.
 - [ ] The output keeps the difference: NULL is written as nothing, and an empty string is
       written as `""`.
+- [ ] One exception: a row whose only field is NULL is written as `""`, with a warning. An
+      empty line would be read back as a blank line and skipped, which loses the row.
 
 ### Empty and minimal files
 
