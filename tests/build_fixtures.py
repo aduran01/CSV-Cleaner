@@ -21,6 +21,31 @@ FIXTURES: dict[str, bytes] = {
     "cp1252.csv": b"item,price\r\ncaf\xe9,\x805\r\n",
     # 0x81 is undefined in cp1252, so this can only be Latin-1.
     "latin1.csv": b"code,label\r\n\x81,na\xefve\r\n",
+    # Line endings
+    "crlf.csv": b"a,b\r\n1,2\r\n3,4\r\n",
+    "lf.csv": b"a,b\n1,2\n3,4\n",
+    "mixed_endings.csv": b"a,b\r\n1,2\n3,4\r\n",
+    "no_final_newline.csv": b"a,b\r\n1,2",
+    "bare_cr.csv": b"a,b\r\nx\ry,2\r\n",
+    # Quoting
+    "quoted_commas.csv": b'name,address\r\nAda,"12 Main St, Apt 4"\r\n',
+    "doubled_quotes.csv": b'id,quote\r\n1,"She said ""hi"""\r\n2,""""\r\n',
+    "embedded_lf.csv": b'id,note\r\n1,"line one\nline two"\r\n2,x\r\n',
+    "embedded_crlf.csv": b'id,note\r\n1,"line one\r\nline two"\r\n2,x\r\n',
+    "mid_field_quote.csv": b'a,b\r\n5\'10",x\r\n1, "q"\r\n',
+    "unclosed_quote.csv": b'a,b\r\n1,2\r\n3,"never closed\r\n4,5\r\n',
+    "junk_after_quote.csv": b'a,b\r\n"abc"x,1\r\n',
+    # Whitespace
+    "whitespace.csv": b'a,b,c\r\n  x , y ,"  z  "\r\n',
+    # NULL vs. empty string
+    "null_vs_empty.csv": b'a,b,c\r\n1,,""\r\n,"",\r\n',
+    # Empty and minimal files
+    "headers_only.csv": b"id,name,zip\r\n",
+    "blank_lines.csv": b"a,b\r\n\r\n1,2\n\n3,4\r\n",
+    # Values that must never change
+    "numeric_looking.csv": b"zip,lat,lon,id,sci,nan,flag,date\r\n"
+    b"00501,40.7128,-74.0060,000123456789012345,1e5,NaN,TRUE,03/04/2025\r\n"
+    b"007,-0.0,0.10,42,1E-3,nan,false,2025-04-03\r\n",
 }
 
 

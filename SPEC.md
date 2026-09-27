@@ -103,8 +103,9 @@ and the **exact output bytes**. Error tests also check the reported line and col
 ### Line endings
 
 - [ ] `\r\n` and `\n` both end a row, even when mixed in one file.
-- [ ] A bare `\r` that isn't followed by `\n` is **literal field data**, not a row end, and
-      produces a warning.
+- [ ] A bare `\r` that isn't followed by `\n` is **literal field data**, not a row end.
+      Outside quotes it produces a warning. Inside quotes it is ordinary data with no
+      warning, since every parser agrees on that case.
 - [ ] Output rows end in `\r\n`. `--lf` switches to `\n`.
 
 ### Quoting
