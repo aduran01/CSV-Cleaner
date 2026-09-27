@@ -65,6 +65,7 @@ All paths are relative to the `CSV Cleaner/` folder.
 | `requirements-dev.txt` | Pinned test-only dependencies (pytest) |
 | `.gitignore` | Keeps `venv/` and caches out of git |
 | `.gitattributes` | Marks fixtures as binary so git leaves their bytes alone |
+| `README.md` | Project overview: usage, problem, decisions, tradeoffs, and results |
 
 ## Acceptance criteria
 
