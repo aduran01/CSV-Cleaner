@@ -43,10 +43,15 @@ class Row:
     raw: str  # the row's source text, without its line ending
 
 
-def parse(text: str, delimiter: str, reporter: Reporter) -> Iterator[Row]:
-    """Yield rows lazily, so delimiter sniffing can stop after the first few."""
+def validate_delimiter(delimiter: str) -> None:
+    """A delimiter must be one character that can't be confused with quoting or line endings."""
     if len(delimiter) != 1 or delimiter in (QUOTE, "\r", "\n"):
         raise ValueError(f"invalid delimiter: {delimiter!r}")
+
+
+def parse(text: str, delimiter: str, reporter: Reporter) -> Iterator[Row]:
+    """Yield rows lazily, so delimiter sniffing can stop after the first few."""
+    validate_delimiter(delimiter)
     return _Tokenizer(text, delimiter, reporter).rows()
 
 
